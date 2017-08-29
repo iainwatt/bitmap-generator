@@ -6,6 +6,11 @@ class BitmapEditor
     File.open(file).each do |line|
       line = line.chomp
       case line
+      when 'I'
+      when 'C'
+      when 'L'
+      when 'V'
+      when 'H'
       when 'S'
           puts "There is no image"
       else
@@ -13,8 +18,12 @@ class BitmapEditor
       end
     end
   end
+
   
 end # class end
+
+be = BitmapEditor.new 
+be.run()
 
 
 Program input
@@ -34,17 +43,53 @@ S - Show the contents of the current image
 
 Input 
 
-I 5 6 - Create new image (5 rows x 6 cols)
+I 5 6 - Create new image (5 col x 6 row)
 L 1 3 A (color) L = color one pixel at certain coordinates
-V 2 (column) 3 6 (rows) W (color) V = vertica line 
+V 2 (column) 3 6 (rows) W (color) V = vertical line 
 H 3 5 (cols) 2 (row) Z (color) H = horizontal line 
 S
 
 Output
 
 OOOOO
-OOZZZ
+OOZZZ 
 AWOOO
 OWOOO
 OWOOO
 OWOOO
+
+command 1: I 5 6 - Create new image (5 col x 6 row) 
+
+00000 
+00000
+00000
+00000
+00000
+00000
+
+command 2:  L 1 3 A (color) L = color one pixel at certain coordinates
+
+00000 
+00000
+A0000
+00000
+00000
+00000
+
+command 3: V 2 (column) 3 6 (rows) W (color) V = vertical line  
+
+00000 
+00000
+AW000
+0W000
+0W000
+0W000
+
+command 4: H 3 5 (between cols) 2 (row) Z (color) H = horizontal line 
+
+00000 
+00ZZZ
+AW000
+0W000
+0W000
+0W000
