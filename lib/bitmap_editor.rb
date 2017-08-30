@@ -1,5 +1,4 @@
 class BitmapEditor
-  require 'pp'
   @@image_array
   
   def create_image(cols, rows)
@@ -56,41 +55,40 @@ class BitmapEditor
     return @@image_array
   end 
 
-  def show_image
+  def show_image()
     @@image_array.each do |row|
-      pp row.join(",").gsub('"', '')
+      puts row.join(",").gsub('"', '').gsub(/[\s,]/ ,"")
     end
   end
 
   def run(file)
     return puts "please provide correct file" if file.nil? || !File.exists?(file)
 
-
     File.open(file).each do |line|
       line = line.chomp
 
       case line[0]
       when 'I'
+        # draw the table 
         line.gsub!(/\s+/, "") 
         create_image(line[1], line[2])
-        # draw the table 
       when 'C'
-        create_image(cols, rows)
         # redraw the table setting all elements to white 
+        create_image(cols, rows)
       when 'L'
+        # color one pixe;
         line.gsub!(/\s+/, "") 
         color_pixel(line[1], line[2], line[3])
-        # color one pixe;
       when 'V'
+        # draw a vertical line 
         line.gsub!(/\s+/, "") 
         draw_vertical(line[1], line[2], line[3], line[4])
-        # draw a vertical line 
       when 'H'
+        # draw a horizontal line 
         line.gsub!(/\s+/, "") 
         draw_horizontal(line[1], line[2], line[3], line[4])
-        # draw a horizontal line 
       when 'S'
-          show_image
+          show_image()
       else
           puts 'unrecognised command :('
       end
