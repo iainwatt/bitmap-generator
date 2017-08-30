@@ -1,16 +1,75 @@
 class BitmapEditor
+  
+  def create_image(cols, rows)
+    num = 0
+    image_array = []
+    rows.times do 
+      image_array << Array.new(cols, 0)
+    end 
+    return image_array
+  end
+
+  def color_pixel(image_array, row, col, color)
+    col -= 1 
+    row -= 1
+    image_array[row][col] = color 
+    return image_array
+  end 
+
+  def draw_vertical(image_array, col, row_from, row_to, color)
+    col -= 1  
+    image_array.each_with_index.map  do |row, i|
+      i += 1
+      if i >= row_from && i <= row_to 
+        row[col] = color
+      end 
+    end 
+    return image_array
+end 
+
+def draw_horizontal(image_array, drawable_row, col_from, col_to, color)
+  drawable_row -= 1
+  col_from -= 1 
+  col_to -= 1  
+  image_array.each_with_index.map do |row, i|
+    if i == drawable_row 
+      row.each_with_index.map do |elem, i| 
+        if i >= col_from && i <= col_to 
+          row[i] = color
+        end
+      end 
+    end 
+  end 
+  return image_array
+end 
 
   def run(file)
     return puts "please provide correct file" if file.nil? || !File.exists?(file)
 
+    
+
+
     File.open(file).each do |line|
       line = line.chomp
-      case line
+      # p line
+      # p line.class
+      # p line[0]
+      case line[0]
       when 'I'
+        p line 
+        # draw the table 
       when 'C'
+        p line 
+        # redraw the table setting all elements to white 
       when 'L'
+        p line 
+        # color one pixe;
       when 'V'
+        p line 
+        # draw a vertical line 
       when 'H'
+        p line 
+        # draw a horizontal line 
       when 'S'
           puts "There is no image"
       else
@@ -23,73 +82,6 @@ class BitmapEditor
 end # class end
 
 be = BitmapEditor.new 
-be.run()
+be.run('/Users/iainwatt/Downloads/bitmap_editor-master/examples/test.txt')
 
 
-Program input
-The input consists of a file containing a sequence of commands, 
-where a command is represented by a single capital letter at the beginning of the line. 
-Parameters of the command are separated by white spaces and they follow the command character.
-Pixel co-ordinates are a pair of integers: a column number between 1 and 250, and a row number between 1 and 250. 
-Bitmaps starts at coordinates 1,1. Colours are specified by capital letters.
-
-There are 6 supported commands:
-I M N - Create a new M (rows) x N (cols) image with all pixels coloured white (O).
-C - Clears the table, setting all pixels to white (O).
-L X Y C - Colours the pixel (X,Y) with colour C.
-V X Y1 Y2 C - Draw a vertical segment of colour C in column X between rows Y1 and Y2 (inclusive).
-H X1 X2 Y C - Draw a horizontal segment of colour C in row Y between columns X1 and X2 (inclusive).
-S - Show the contents of the current image
-
-Input 
-
-I 5 6 - Create new image (5 col x 6 row)
-L 1 3 A (color) L = color one pixel at certain coordinates
-V 2 (column) 3 6 (rows) W (color) V = vertical line 
-H 3 5 (cols) 2 (row) Z (color) H = horizontal line 
-S
-
-Output
-
-OOOOO
-OOZZZ 
-AWOOO
-OWOOO
-OWOOO
-OWOOO
-
-command 1: I 5 6 - Create new image (5 col x 6 row) 
-
-00000 
-00000
-00000
-00000
-00000
-00000
-
-command 2:  L 1 3 A (color) L = color one pixel at certain coordinates
-
-00000 
-00000
-A0000
-00000
-00000
-00000
-
-command 3: V 2 (column) 3 6 (rows) W (color) V = vertical line  
-
-00000 
-00000
-AW000
-0W000
-0W000
-0W000
-
-command 4: H 3 5 (between cols) 2 (row) Z (color) H = horizontal line 
-
-00000 
-00ZZZ
-AW000
-0W000
-0W000
-0W000
