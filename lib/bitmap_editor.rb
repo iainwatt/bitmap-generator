@@ -16,13 +16,8 @@ class BitmapEditor
 
 	class Draw
 
-		def initialize(bitmap, y=nil, x=nil, color=nil, from=nil, to=nil)
+		def initialize(bitmap)
 			@bitmap = bitmap
-			@x = x.to_i if !x.nil?
-			@y = y.to_i if !y.nil?
-			@color = color  if !color.nil?
-			@from = from.to_i if !from.nil?
-			@to = to.to_i if !to.nil?
 		end 
 
 		def normalize_params(x=nil, y=nil, color=nil, from=nil, to=nil)
@@ -53,19 +48,11 @@ class BitmapEditor
 
 		def vertical_line(y, from, to, color)
 			normalize_params(x=nil, y, color, from, to)
-			# draw_vertical(col, row_from, row_to, color)
-			# col = col.to_i 
-			# row_from = row_from.to_i 
-			# row_to = row_to.to_i
-			# col -= 1  
-			# @@image_array.each_with_index.map  do |row, i|
-			#   i += 1
-			#   if i >= row_from && i <= row_to 
-			#     row[col] = color
-			#   end 
-			# end 
-			# return @@image_array
-			
+			@bitmap.each_with_index.map  do |row, i|
+			  if i >= @from && i <= @to 
+			    row[@y] = @color
+			  end 
+			end 
 		end 
 
 		def horizontal_line(from, to, width, color)
@@ -140,6 +127,7 @@ class BitmapEditor
 		bitmap = Bitmap.new(5,6)
 		draw = Draw.new(bitmap.image)
 		draw.one_pixel('1', '3', 'A')
+		draw.vertical_line('2', '3', '6', 'W')
 		draw.bitmap_image
 	end 
 	
