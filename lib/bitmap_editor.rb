@@ -1,14 +1,14 @@
 class BitmapEditor
 	
 	class Bitmap 
-		attr_reader :width, :x, :image
+		attr_reader :x, :y, :image
 
-		def initialize(width, height)
-			@width = width
-			@height = height
+		def initialize(x, y)
+			@x = x
+			@y = y
 			@image = []
-			@height.times do 
-				@image << Array.new(@width, 0)
+			@y.times do 
+				@image << Array.new(@x, 0)
 			end 
 		end
 
@@ -17,7 +17,8 @@ class BitmapEditor
 	class Draw
 
 		def initialize(bitmap)
-			@bitmap = bitmap
+			@bitmap = bitmap.image 
+			@bitmap_instance = bitmap
 		end 
 
 		def normalize_params(x=nil, y=nil, color=nil, from=nil, to=nil)
@@ -41,6 +42,14 @@ class BitmapEditor
 			end 
 		end 
 
+		def new_image
+			new_image = []
+			@bitmap_instance.y.times do 
+				new_image << Array.new(@bitmap_instance.x, 0)
+			end 
+			@bitmap = new_image
+		end 
+
 		def one_pixel(x, y, color)
 			normalize_params(x, y, color, from=nil, to=nil)
 			return @bitmap[@y][@x] = @color 
@@ -55,26 +64,17 @@ class BitmapEditor
 			end 
 		end 
 
-		def horizontal_line(from, to, width, color)
-			normalize_params(x=nil, width, color, from, to)
-			# draw_horizontal(col_from, col_to, drawable_row, color)
-			# drawable_row = drawable_row.to_i 
-			# col_from = col_from.to_i 
-			# col_to = col_to.to_i
-			# drawable_row -= 1
-			# col_from -= 1 
-			# col_to -= 1  
-			# @@image_array.each_with_index.map do |row, i|
-			# 	if i == drawable_row 
-			# 		row.each_with_index.map do |elem, i| 
-			# 			if i >= col_from && i <= col_to 
-			# 				row[i] = color
-			# 			end
-			# 		end 
-			# 	end 
-			# end 
-			# return @@image_array
-
+		def horizontal_line(from, to, y, color)
+			normalize_params(x=nil, y, color, from, to)
+			@bitmap.each_with_index.map do |row, i|
+				if i == @y 
+					row.each_with_index.map do |elem, i| 
+						if i >= @from && i <= @to 
+							row[i] = @color
+						end
+					end 
+				end 
+			end 
 		end 
 
 		def bitmap_image
@@ -125,9 +125,12 @@ class BitmapEditor
 
 	def test()
 		bitmap = Bitmap.new(5,6)
-		draw = Draw.new(bitmap.image)
+		draw = Draw.new(bitmap)
 		draw.one_pixel('1', '3', 'A')
 		draw.vertical_line('2', '3', '6', 'W')
+		draw.horizontal_line('3', '5', '2', 'Z')
+		# draw.bitmap_image
+		draw.new_image
 		draw.bitmap_image
 	end 
 	
