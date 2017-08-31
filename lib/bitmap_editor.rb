@@ -12,6 +12,10 @@ class BitmapEditor
 			end 
 		end
 
+		def bounds?(x, y)
+    		x <= @width && y <= @height
+  		end
+
 	end # class Bitmap end
 
 	class Draw
@@ -42,6 +46,10 @@ class BitmapEditor
 			end 
 		end 
 
+		def valid_coordinates?(x, y)
+			x <= @bitmap_instance.x && y <= @bitmap_instance.y
+		end 
+
 		def new_image
 			new_image = []
 			@bitmap_instance.y.times do 
@@ -52,6 +60,10 @@ class BitmapEditor
 
 		def one_pixel(x, y, color)
 			normalize_params(x, y, color, from=nil, to=nil)
+			if !valid_coordinates?(@x, @y)
+				puts "ERROR: unable to execute command L. Coordinates out of range"
+				return 
+			end
 			return @bitmap[@y][@x] = @color 
 		end 
 
@@ -103,7 +115,7 @@ class BitmapEditor
 		File.open(file).each_with_index do |line, i|
 			line = normalize_line(line)
 
-			return "Please create a bitmap image first" if i == 0 && line[0] != 'I'
+			return "ERROR: Please create a bitmap image first" if i == 0 && line[0] != 'I'
 	
 			case line[0] 
 			when 'I'
@@ -134,7 +146,6 @@ class BitmapEditor
 end # class end
 
 be = BitmapEditor.new 
-# be.run('/Users/iainwatt/Downloads/bitmap_editor-master/examples/test.txt')
 be.run('/Users/iainwatt/CodeTests/Carwow/bitmap_editor-master/examples/test.txt')
 # be.test()
 
