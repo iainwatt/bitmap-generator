@@ -1,17 +1,53 @@
 class BitmapEditor
   @@image_array
-  
-  def create_image(cols, rows)
-    num = 0
-    image_array = []
-    # do this at start
-    rows = rows.to_i
-    cols = cols.to_i
-    rows.times do 
-      image_array << Array.new(cols, 0)
+  # require 'bitmap'
+  class Bitmap 
+    attr_reader :width, :height, :image
+
+    def initialize(width, height)
+      @width = width
+      @height = height
+      @image = []
+      @height.times do 
+        @image << Array.new(@width, 0)
+      end 
+    end
+
+  end 
+
+  class Draw
+    attr_accessor :bitmap
+
+    def initialize(bitmap, height=nil, width=nil, color=nil, from=nil, to=nil)
+      @bitmap = bitmap
+      @height = height.to_i if !height.nil?
+      @width = width.to_i if !width.nil?
+      @color = color  if !color.nil?
+      @from = from.to_i if !from.nil?
+      @to = to.to_i if !to.nil?
     end 
-    @@image_array = image_array
-  end
+
+    def one_pixel
+      return @bitmap[@height][@width] = @color 
+    end 
+
+    def vertical_line()
+
+    end 
+
+    def horizontal_line()
+
+    end 
+
+    def bitmap_image
+      @bitmap.each do |row|
+        puts row.join(",").gsub('"', '').gsub(/[\s,]/ ,"")
+      end
+    end 
+
+  end 
+  
+  
 
   def color_pixel(col, row, color)
     row = row.to_i 
@@ -55,11 +91,6 @@ class BitmapEditor
     return @@image_array
   end 
 
-  def show_image()
-    @@image_array.each do |row|
-      puts row.join(",").gsub('"', '').gsub(/[\s,]/ ,"")
-    end
-  end
 
   def run(file)
     return puts "please provide correct file" if file.nil? || !File.exists?(file)
@@ -95,48 +126,20 @@ class BitmapEditor
     end
 
 
+
   end
 
+  def test()
+    bitmap = Bitmap.new(4,4)
+    draw = Draw.new(bitmap.image)
+    draw.bitmap_image
+  end 
   
 end # class end
 
 be = BitmapEditor.new 
-be.run('/Users/iainwatt/Downloads/bitmap_editor-master/examples/test.txt')
+# be.run('/Users/iainwatt/Downloads/bitmap_editor-master/examples/test.txt')
+be.test()
 
-class Bitmap 
-  attr_reader :width, :height, :image
 
-  def initialize(width, height)
-    @width = width
-    @height = height
-    @image = []
-    @height.times do 
-      image_array << Array.new(@width, 0)
-    end 
-  end
 
-end 
-
-class Draw  
-
-  def initialize(height, width, color, from=nil, to=nil)
-
-  end 
-
-  def one_pixel()
-
-  end 
-
-  def vertical_line()
-
-  end 
-
-  def horizontal_line()
-
-  end 
-
-  def bitmap_image()
-
-  end 
-
-end 
