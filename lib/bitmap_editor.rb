@@ -4,8 +4,8 @@ class BitmapEditor
 		attr_reader :x, :y, :image
 
 		def initialize(x, y)
-			@x = x
-			@y = y
+			@x = x.to_i
+			@y = y.to_i
 			@image = []
 			@y.times do 
 				@image << Array.new(@x, 0)
@@ -84,38 +84,42 @@ class BitmapEditor
 		end 
 
 	end # class Draw end
+
+	def normalize_line(line)
+		line = line.chomp
+		if !line.nil? || !line.empty? 
+			if line.length > 1
+				line.gsub!(/\s+/, "") 
+			else 
+				line
+			end 
+		end
+	end
 	
 
 	def run(file)
 		return puts "please provide correct file" if file.nil? || !File.exists?(file)
 
 		File.open(file).each do |line|
-			line = line.chomp
-
-			case line[0]
+			line = normalize_line(line)
+	
+			case line[0] 
 			when 'I'
-				# draw the table 
-				line.gsub!(/\s+/, "") 
-				create_image(line[1], line[2])
+				# draw the table and instantiate the draw class
+				bitmap = Bitmap.new(line[1],line[2])
+				@draw = Draw.new(bitmap)
 			when 'C'
-				# redraw the table setting all elements to white 
-				create_image(cols, rows)
+				@draw.new_image
 			when 'L'
-				# color one pixe;
-				line.gsub!(/\s+/, "") 
-				color_pixel(line[1], line[2], line[3])
+				@draw.one_pixel(line[1], line[2], line[3])
 			when 'V'
-				# draw a vertical line 
-				line.gsub!(/\s+/, "") 
-				draw_vertical(line[1], line[2], line[3], line[4])
+				@draw.vertical_line(line[1], line[2], line[3], line[4])
 			when 'H'
-				# draw a horizontal line 
-				line.gsub!(/\s+/, "") 
-				draw_horizontal(line[1], line[2], line[3], line[4])
+				@draw.horizontal_line(line[1], line[2], line[3], line[4])
 			when 'S'
-					show_image()
+				@draw.bitmap_image
 			else
-					puts 'unrecognised command :('
+				puts 'unrecognised command :('
 			end
 		end
 
@@ -123,22 +127,24 @@ class BitmapEditor
 
 	end
 
-	def test()
-		bitmap = Bitmap.new(5,6)
-		draw = Draw.new(bitmap)
-		draw.one_pixel('1', '3', 'A')
-		draw.vertical_line('2', '3', '6', 'W')
-		draw.horizontal_line('3', '5', '2', 'Z')
-		# draw.bitmap_image
-		draw.new_image
-		draw.bitmap_image
-	end 
+	
 	
 end # class end
 
 be = BitmapEditor.new 
 # be.run('/Users/iainwatt/Downloads/bitmap_editor-master/examples/test.txt')
-be.test()
+be.run('/Users/iainwatt/CodeTests/Carwow/bitmap_editor-master/examples/test.txt')
+# be.test()
 
 
 
+
+# def test()
+# 		bitmap = Bitmap.new(5,6)
+# 		draw = Draw.new(bitmap)
+# 		draw.one_pixel('1', '3', 'A')
+# 		draw.vertical_line('2', '3', '6', 'W')
+# 		draw.horizontal_line('3', '5', '2', 'Z')
+# 		# draw.new_image
+# 		draw.bitmap_image
+# 	end 
