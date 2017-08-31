@@ -103,3 +103,40 @@ end # class end
 be = BitmapEditor.new 
 be.run('/Users/iainwatt/Downloads/bitmap_editor-master/examples/test.txt')
 
+class Bitmap 
+  attr_reader :width, :height, :image
+
+  def initialize(width, height)
+    @width = width
+    @height = height
+    @image = []
+    @height.times do 
+      image_array << Array.new(@width, 0)
+    end 
+  end
+
+end 
+
+class Draw  
+
+  def initialize(height, width, color, from=nil, to=nil)
+
+  end 
+
+  def one_pixel()
+
+  end 
+
+  def vertical_line()
+
+  end 
+
+  def horizontal_line()
+
+  end 
+
+  def bitmap_image()
+
+  end 
+
+end 
