@@ -100,8 +100,10 @@ class BitmapEditor
 	def run(file)
 		return puts "please provide correct file" if file.nil? || !File.exists?(file)
 
-		File.open(file).each do |line|
+		File.open(file).each_with_index do |line, i|
 			line = normalize_line(line)
+
+			return "Please create a bitmap image first" if i == 0 && line[0] != 'I'
 	
 			case line[0] 
 			when 'I'
@@ -136,15 +138,3 @@ be = BitmapEditor.new
 be.run('/Users/iainwatt/CodeTests/Carwow/bitmap_editor-master/examples/test.txt')
 # be.test()
 
-
-
-
-# def test()
-# 		bitmap = Bitmap.new(5,6)
-# 		draw = Draw.new(bitmap)
-# 		draw.one_pixel('1', '3', 'A')
-# 		draw.vertical_line('2', '3', '6', 'W')
-# 		draw.horizontal_line('3', '5', '2', 'Z')
-# 		# draw.new_image
-# 		draw.bitmap_image
-# 	end 
