@@ -149,3 +149,46 @@ be = BitmapEditor.new
 be.run('/Users/iainwatt/CodeTests/Carwow/bitmap_editor-master/examples/test.txt')
 # be.test()
 
+
+
+# ================================================== FEEDBACK ================================================== #
+# Main error was insufficient testing, successful candidates had 20 tests 
+# - Misses a lot of simple cases (doesn't reject 0 coordinates, the H command doesn't seem to work at all)
+# - Allows lower case letters as colours
+# - Allows multiple characters as colours (just takes first character)
+# - Allows co-ordinates outside of canvas as valid (eg 0,0)
+# - Incorrectly parses input (allows numbers as colours)
+# + It does have a nice integration test using an example file, but no other unit tests at all
+# CONCLUSION: Write 10+ unit tests and more integration tests 
+#
+# Other Issues 
+# - Code is quite hard to follow
+# - Left in a line for testing which causes it to always print an error before running
+# - The Draw class is quite hard to follow (it tries to normalise all possible variants of inputs which makes 
+#   understanding  what all the variables are in different cases quite tricky)
+# - Incorrectly handles co-ordinates
+# - Default pixel colour should be O (capital letter o) not zero
+# - Several classes in same file Input validation is dispersed and awkward
+# + has separated classes out which is good
+#
+# CONCLUSION
+# 1. Lack of comments in code caused problems 
+# 2. Sloppyness - caused issues with leaving line to run, not setting default color correctly and 
+#    incorrectly handling co-ordinates
+# 3. Style issues like classes in the same file need explained 
+#
+# ================================================== FEEDBACK ================================================== #
+
+
+
+
+Left in a line for testing which causes it to always print an error before running
+The Draw class is quite hard to follow (it tries to normalise all possible variants of inputs which makes understanding what all the variables are in different cases quite tricky)
+It does have a nice integration test using an example file, but no other unit tests at all
+Incorrectly handles co-ordinates
+
+
+
+
+Default pixel colour should be O (capital letter o) not zero
+Several classes in same file Input validation is dispersed and awkward 

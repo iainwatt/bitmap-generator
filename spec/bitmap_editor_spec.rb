@@ -2,8 +2,6 @@ require 'bitmap_editor.rb'
 RSpec.describe BitmapEditor do
     @@bitmap_editor = BitmapEditor.new 
 
-    
-
     describe "#run" do
         
         it "should error when 'I' is not the first command" do 
